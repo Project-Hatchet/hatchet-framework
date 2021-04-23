@@ -1,9 +1,0 @@
-name = "Project Hatchet"
-prefix = "hatchet"
-author = "Project Hatchet"
-mainprefix = "z"
-
-include = ["./include"]
-folder_optionals = true
-
-releasebuild = ["@zip {{modname}}", "@zip {{key_name}}"]

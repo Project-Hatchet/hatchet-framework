@@ -1,3 +1,5 @@
+#include "\x\cba\addons\main\script_macros_common.hpp"
+
 #define PARAMS params ["_name","_condition","_subItems",["_positionType", nil],["_position", nil],["_label", nil],["_radius", nil],["_clickSound",""],["_interactCondition",{true}],["_buttonConfig", nil], ["_animConfig", nil], ["_knobConfig", nil]]
 #define BTNPARAMS params ["_buttonDown", "_buttonUp", "_buttonHold", ["_knobClick", nil]]
 #define ANIMPARAMS ["_animation", "_animationSpeed", "_animLooping", "_animationSteps", "_animationLabels", "_animStart", "_animEnd"]

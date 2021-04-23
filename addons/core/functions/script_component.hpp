@@ -1,1 +1,3 @@
-#include "../script_component.hpp"
+#include "\z\hatchet_framework\addons\core\script_component.hpp"
+
+

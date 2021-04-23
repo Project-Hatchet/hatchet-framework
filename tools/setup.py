@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 #######################
-#  hatchet_framework Setup Script  #
+#    hatchet_framework Setup Script    #
 #######################
 
 import os
@@ -12,28 +12,27 @@ import subprocess
 import winreg
 
 ######## GLOBALS #########
-MAINDIR = "x"
+MAINDIR = "z"
 PROJECTDIR = "hatchet_framework"
-CBA = "P:\\x\\cba"
 ##########################
 
 def main():
     FULLDIR = "{}\\{}".format(MAINDIR,PROJECTDIR)
     print("""
-  ######################################
-  # hatchet_framework Development Environment Setup #
-  ######################################
+    ######################################
+    # hatchet_framework Development Environment Setup #
+    ######################################
 
-  This script will create your hatchet_framework dev environment for you.
+    This script will create your hatchet_framework dev environment for you.
 
-  Before you run this, you should already have:
+    Before you run this, you should already have:
     - A properly setup ACE3 Development Environment
 
-  If you have not done those things yet, please abort this script in the next step and do so first.
+    If you have not done those things yet, please abort this script in the next step and do so first.
 
-  This script will create two hard links on your system, both pointing to your hatchet_framework project folder:
+    This script will create two hard links on your system, both pointing to your hatchet_framework project folder:
     [Arma 3 installation directory]\\{} => hatchet_framework project folder
-    P:\\{}                              => hatchet_framework project folder
+    P:\\{}                                => hatchet_framework project folder
     """.format(FULLDIR,FULLDIR))
     print("\n")
 
@@ -54,8 +53,8 @@ def main():
     projectpath = os.path.dirname(os.path.dirname(scriptpath))
 
     print("# Detected Paths:")
-    print("  Arma Path:    {}".format(armapath))
-    print("  Project Path: {}".format(projectpath))
+    print("    Arma Path:    {}".format(armapath))
+    print("    Project Path: {}".format(projectpath))
 
     repl = input("\nAre these correct? (y/n): ")
     if repl.lower() != "y":

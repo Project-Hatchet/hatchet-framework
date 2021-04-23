@@ -1,8 +1,15 @@
-
-## Added by HEMTT
+*.bak
+*.zip
+*.cache
+release/*
 releases/*
-*.biprivatekey
 keys/*
-.hemtt/local.toml
-addons/*.pbo
-####
+.hemtt/local
+*.pbo
+texHeaders.bin
+*.swp
+*.swo
+*.biprivatekey
+*.p3d
+*.paa
+Thumbs.db

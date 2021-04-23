@@ -1,0 +1,12 @@
+name = "Hatchet Framework";
+picture = "logo_vtx_ca.paa";
+actionName = "Guide";
+action = "https://uh-60m.gitbook.io/workspace/guides/getting-started";
+description = "Hatchet Framework";
+logo = "logo_vtx_ca.paa";
+logoOver = "logo_vtx_ca.paa";
+tooltip = "Hatchet Framework";
+tooltipOwned = "Hatchet Framework Owned";
+overview = "Hatchet Framework";
+author = "Yax";
+overviewPicture = "logo_vtx_ca.paa";

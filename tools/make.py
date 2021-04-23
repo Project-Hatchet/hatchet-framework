@@ -30,7 +30,7 @@
 
 ###############################################################################
 
-__version__ = "0.9"
+__version__ = "0.8"
 
 import sys
 
@@ -57,8 +57,8 @@ if sys.platform == "win32":
     import winreg
 
 ######## GLOBALS #########
-project = "@htf"
-project_version = "0.3.0"
+project = "@hatchet_framework"
+project_version = "3.0.0"
 arma3tools_path = ""
 work_drive = ""
 module_root = ""
@@ -66,26 +66,26 @@ make_root = ""
 release_dir = ""
 module_root_parent = ""
 optionals_root = ""
-key_name = "htf"
+key_name = "hatchet_framework"
 key = ""
 dssignfile = ""
-prefix = "htf"
-pbo_name_prefix = "htf_"
+prefix = "hatchet_framework"
+pbo_name_prefix = "hatchet_framework_"
 signature_blacklist = []
-importantFiles = ["mod.cpp", "meta.cpp", "README.md", "AUTHORS.txt", "LICENSE"]
+importantFiles = ["mod.cpp", "README.md", "AUTHORS.txt", "LICENSE", "logo_hatchet_framework_ca.paa"]
 versionFiles = ["README.md", "mod.cpp"]
 
-ciBuild = True # Used for CI builds
+ciBuild = False # Used for CI builds
 
 ###############################################################################
 # http://akiscode.com/articles/sha-1directoryhash.shtml
 # Copyright (c) 2009 Stephen Akiki
 # MIT License (Means you can do whatever you want with this)
-#  See http://www.opensource.org/licenses/mit-license.php
+#    See http://www.opensource.org/licenses/mit-license.php
 # Error Codes:
-#   -1 -> Directory does not exist
-#   -2 -> General error (see stack traceback)
-def  get_directory_hash(directory):
+#     -1 -> Directory does not exist
+#     -2 -> General error (see stack traceback)
+def    get_directory_hash(directory):
     directory_hash = hashlib.sha1()
     if not os.path.exists (directory):
         return -1
@@ -140,22 +140,22 @@ if sys.platform == "win32":
     WORD = c_ushort
 
     class COORD(Structure):
-      """struct in wincon.h."""
-      _fields_ = [
+        """struct in wincon.h."""
+        _fields_ = [
         ("X", SHORT),
         ("Y", SHORT)]
 
     class SMALL_RECT(Structure):
-      """struct in wincon.h."""
-      _fields_ = [
+        """struct in wincon.h."""
+        _fields_ = [
         ("Left", SHORT),
         ("Top", SHORT),
         ("Right", SHORT),
         ("Bottom", SHORT)]
 
     class CONSOLE_SCREEN_BUFFER_INFO(Structure):
-      """struct in wincon.h."""
-      _fields_ = [
+        """struct in wincon.h."""
+        _fields_ = [
         ("dwSize", COORD),
         ("dwCursorPosition", COORD),
         ("wAttributes", WORD),
@@ -169,23 +169,23 @@ if sys.platform == "win32":
 
     # wincon.h
     FOREGROUND_BLACK     = 0x0000
-    FOREGROUND_BLUE      = 0x0001
+    FOREGROUND_BLUE        = 0x0001
     FOREGROUND_GREEN     = 0x0002
-    FOREGROUND_CYAN      = 0x0003
-    FOREGROUND_RED       = 0x0004
-    FOREGROUND_MAGENTA   = 0x0005
+    FOREGROUND_CYAN        = 0x0003
+    FOREGROUND_RED         = 0x0004
+    FOREGROUND_MAGENTA     = 0x0005
     FOREGROUND_YELLOW    = 0x0006
-    FOREGROUND_GREY      = 0x0007
+    FOREGROUND_GREY        = 0x0007
     FOREGROUND_INTENSITY = 0x0008 # foreground color is intensified.
 
     BACKGROUND_BLACK     = 0x0000
-    BACKGROUND_BLUE      = 0x0010
+    BACKGROUND_BLUE        = 0x0010
     BACKGROUND_GREEN     = 0x0020
-    BACKGROUND_CYAN      = 0x0030
-    BACKGROUND_RED       = 0x0040
-    BACKGROUND_MAGENTA   = 0x0050
+    BACKGROUND_CYAN        = 0x0030
+    BACKGROUND_RED         = 0x0040
+    BACKGROUND_MAGENTA     = 0x0050
     BACKGROUND_YELLOW    = 0x0060
-    BACKGROUND_GREY      = 0x0070
+    BACKGROUND_GREY        = 0x0070
     BACKGROUND_INTENSITY = 0x0080 # background color is intensified.
 
     stdout_handle = windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
@@ -193,17 +193,17 @@ if sys.platform == "win32":
     GetConsoleScreenBufferInfo = windll.kernel32.GetConsoleScreenBufferInfo
 
     def get_text_attr():
-      """Returns the character attributes (colors) of the console screen
-      buffer."""
-      csbi = CONSOLE_SCREEN_BUFFER_INFO()
-      GetConsoleScreenBufferInfo(stdout_handle, byref(csbi))
-      return csbi.wAttributes
+        """Returns the character attributes (colors) of the console screen
+        buffer."""
+        csbi = CONSOLE_SCREEN_BUFFER_INFO()
+        GetConsoleScreenBufferInfo(stdout_handle, byref(csbi))
+        return csbi.wAttributes
 
     def set_text_attr(color):
-      """Sets the character attributes (colors) of the console screen
-      buffer. Color is a combination of foreground and background color,
-      foreground and background intensity."""
-      SetConsoleTextAttribute(stdout_handle, color)
+        """Sets the character attributes (colors) of the console screen
+        buffer. Color is a combination of foreground and background color,
+        foreground and background intensity."""
+        SetConsoleTextAttribute(stdout_handle, color)
 ###############################################################################
 
 def find_bi_tools(work_drive):
@@ -239,16 +239,8 @@ def find_depbo_tools():
                 k = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Mikero\{}".format(tool))
                 path = winreg.QueryValueEx(k, "exe")[0]
             except FileNotFoundError:
-                try:
-                    k = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"Software\Mikero\{}".format(tool))
-                    path = winreg.QueryValueEx(k, "exe")[0]
-                except FileNotFoundError:
-                    try:
-                        k = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Wow6432Node\Mikero\{}".format(tool))
-                        path = winreg.QueryValueEx(k, "exe")[0]
-                    except FileNotFoundError:
-                        k = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"Software\Wow6432Node\Mikero\{}".format(tool))
-                        path = winreg.QueryValueEx(k, "exe")[0]
+                k = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"Software\Mikero\{}".format(tool))
+                path = winreg.QueryValueEx(k, "exe")[0]
         except FileNotFoundError:
             print_error("Could not find {}".format(tool))
             failed = True
@@ -292,10 +284,8 @@ def color(color):
 
 def print_error(msg):
     color("red")
-    print("ERROR: {}".format(msg))
+    print ("ERROR: {}".format(msg))
     color("reset")
-    global printedErrors
-    printedErrors += 1
 
 def print_green(msg):
     color("green")
@@ -422,25 +412,17 @@ def cleanup_optionals(mod):
 
             try:
                 file_name = "{}{}.pbo".format(pbo_name_prefix,dir_name)
-                folder= "@{}{}".format(pbo_name_prefix,dir_name)
                 src_file_path = os.path.join(release_dir, project, "addons", file_name)
-                dst_file_path = os.path.join(release_dir, project, "optionals",folder,"addons",file_name)
+                dst_file_path = os.path.join(release_dir, project, "optionals", file_name)
 
                 sigFile_name = "{}.{}.bisign".format(file_name,key_name)
                 src_sig_path = os.path.join(release_dir, project, "addons", sigFile_name)
-                dst_sig_path = os.path.join(release_dir, project, "optionals",folder,"addons", sigFile_name)
-
+                dst_sig_path = os.path.join(release_dir, project, "optionals", sigFile_name)
 
                 if (os.path.isfile(src_file_path)):
-                    if (os.path.isfile(dst_file_path)):
-                        # print("Cleanuping up old file {}".format(dst_file_path))
-                        os.remove(dst_file_path);
                     #print("Preserving {}".format(file_name))
                     os.renames(src_file_path,dst_file_path)
                 if (os.path.isfile(src_sig_path)):
-                    if (os.path.isfile(dst_sig_path)):
-                        # print("Cleanuping up old file {}".format(dst_sig_path))
-                        os.remove(dst_sig_path);
                     #print("Preserving {}".format(sigFile_name))
                     os.renames(src_sig_path,dst_sig_path)
             except FileExistsError:
@@ -802,10 +784,6 @@ def main(argv):
     global pbo_name_prefix
     global ciBuild
     global missingFiles
-    global failedBuilds
-    global printedErrors
-
-    printedErrors = 0
 
     if sys.platform != "win32":
         print_error("Non-Windows platform (Cygwin?). Please re-run from cmd.")
@@ -838,22 +816,22 @@ release <version> -- Make archive with <version>.
 force -- Ignore cache and build all.
 checkexternal -- Check External Files
 target <name> -- Use rules in make.cfg under heading [<name>] rather than
-   default [Make]
+     default [Make]
 key <name> -- Use key in working directory with <name> to sign. If it does not
-   exist, create key.
+     exist, create key.
 quiet -- Suppress command line output from build tool.
 
 If module names are specified, only those modules will be built.
 
 Examples:
-   make.py force test
-      Build all modules (ignoring cache) and copy the mod folder to the Arma 3
-      directory.
-   make.py mymodule_gun
-      Only build the module named 'mymodule_gun'.
-   make.py force key MyNewKey release 1.0
-      Build all modules (ignoring cache), sign them with NewKey, and pack them
-      into a zip file for release with version 1.0.
+     make.py force test
+        Build all modules (ignoring cache) and copy the mod folder to the Arma 3
+        directory.
+     make.py mymodule_gun
+        Only build the module named 'mymodule_gun'.
+     make.py force key MyNewKey release 1.0
+        Build all modules (ignoring cache), sign them with NewKey, and pack them
+        into a zip file for release with version 1.0.
 
 
 If a file called $NOBIN$ is found in the module directory, that module will not be binarized.
@@ -894,12 +872,6 @@ See the make.cfg file for additional build options.
         quiet = True
         argv.remove("quiet")
 
-    if "checkexternal" in argv:
-        argv.remove("checkexternal")
-        check_external = True
-    else:
-        check_external = False
-
     if "version" in argv:
         argv.remove("version")
         version_update = True
@@ -924,8 +896,6 @@ See the make.cfg file for additional build options.
         argv.remove("ci")
         ciBuild = True
 
-    print_yellow("\nCheck external references is set to {}".format(str(check_external)))
-
     # Get the directory the make script is in.
     make_root = os.path.dirname(os.path.realpath(__file__))
     make_root_parent = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
@@ -941,7 +911,7 @@ See the make.cfg file for additional build options.
         project = cfg.get(make_target, "project", fallback="@"+os.path.basename(os.getcwd()))
 
         # BI Tools work drive on Windows
-        work_drive = cfg.get(make_target, "work_drive",  fallback="P:\\")
+        work_drive = cfg.get(make_target, "work_drive",    fallback="P:\\")
 
         # Private key path
         key = cfg.get(make_target, "key", fallback=None)
@@ -967,7 +937,7 @@ See the make.cfg file for additional build options.
             modules = []
 
         # List of directories to ignore when detecting
-        ignore = [x.strip() for x in cfg.get(make_target, "ignore",  fallback="release").split(',')]
+        ignore = [x.strip() for x in cfg.get(make_target, "ignore",    fallback="release").split(',')]
 
         # Which build tool should we use?
         build_tool = cfg.get(make_target, "build_tool", fallback="addonbuilder").lower()
@@ -1220,7 +1190,7 @@ See the make.cfg file for additional build options.
 
                 except:
                     raise
-                    print_error("Could not copy module to work drive. Does the module exist?")
+                    print_error("ERROR: Could not copy module to work drive. Does the module exist?")
                     input("Press Enter to continue...")
                     print("Resuming build...")
                     continue
@@ -1241,7 +1211,7 @@ See the make.cfg file for additional build options.
                         os.remove(f)
             except:
                 raise
-                print_error("Could not copy module to work drive. Does the module exist?")
+                print_error("ERROR: Could not copy module to work drive. Does the module exist?")
                 input("Press Enter to continue...")
                 print("Resuming build...")
                 continue
@@ -1268,13 +1238,10 @@ See the make.cfg file for additional build options.
 
                     if os.path.isfile(nobinFilePath):
                         print_green("$NOBIN$ Found. Proceeding with non-binarizing!")
-                        cmd = [makepboTool, "-P","-A","-G","-N","-X=*.backup", os.path.join(work_drive, prefix, module),os.path.join(module_root, release_dir, project,"addons")]
+                        cmd = [makepboTool, "-P","-A","-X=*.backup", os.path.join(work_drive, prefix, module),os.path.join(module_root, release_dir, project,"addons")]
 
                     else:
-                        if check_external:
-                            cmd = [pboproject, "-P", os.path.join(work_drive, prefix, module), "+Engine=Arma3", "-S","+Noisy", "+X", "+Clean", "+Mod="+os.path.join(module_root, release_dir, project), "-Key"]
-                        else:
-                            cmd = [pboproject, "-P", os.path.join(work_drive, prefix, module), "+Engine=Arma3", "-S","+Noisy", "-X", "+Clean", "+Mod="+os.path.join(module_root, release_dir, project), "-Key"]
+                        cmd = [pboproject, "-P", os.path.join(work_drive, prefix, module), "+Engine=Arma3", "-S","+Noisy", "+Clean", "+Mod="+os.path.join(module_root, release_dir, project), "-Key"]
 
                     color("grey")
                     if quiet:
@@ -1481,22 +1448,23 @@ See the make.cfg file for additional build options.
             except:
                 print_error("Could not copy files. Is Arma 3 running?")
 
-    tracedErrors = len(failedBuilds) + len(missingFiles)
-    if printedErrors > 0: # printedErrors includes tracedErrors
-        printedOnlyErrors = printedErrors - tracedErrors
-        print()
-        print_error("Failed with {} errors.".format(printedErrors))
+    if len(failedBuilds) > 0 or len(missingFiles) > 0:
         if len(failedBuilds) > 0:
+            print()
+            print_error("Build failed! {} PBOs failed!".format(len(failedBuilds)))
             for failedBuild in failedBuilds:
-                print("- {} build failed!".format(failedBuild))
+                print("- {} failed.".format(failedBuild))
+
         if len(missingFiles) > 0:
+            missingFiles = set(missingFiles)
+            print()
+            print_error("Missing files! {} files not found!".format(len(missingFiles)))
             for missingFile in missingFiles:
-                print("- {} not found!".format(missingFile))
-        if printedOnlyErrors > 0:
-            print_yellow("- {} untraced error(s)!".format(printedOnlyErrors))
+                print("- {} failed.".format(missingFile))
+
+        sys.exit(1)
     else:
         print_green("\nCompleted with 0 errors.")
-
 
 if __name__ == "__main__":
     start_time = timeit.default_timer()
